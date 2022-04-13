@@ -1,0 +1,23 @@
+# configuration file for testing
+#
+
+logger:
+  # json or console
+  format: console
+  level: debug
+  disableCaller: false
+  development: true
+
+sqlite:
+  memory: true
+
+system:
+  port: 3000
+  # mode could be one of the following
+  # - debug
+  # - release
+  # - test
+  mode: debug
+  # 数据库类型 pgsql, mysql, sqlite
+  # 默认pgsql
+  db-type: sqlite

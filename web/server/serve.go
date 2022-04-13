@@ -2,14 +2,10 @@ package server
 
 import (
 	"context"
-	"github.com/117s/mdm/web/initialize"
+	"github.com/117s/mdm/internal/global"
 )
 
-func Init(configfilepath *string) {
-	initialize.LoadConfig(configfilepath)
-}
-
 func ServeAll(ctx context.Context, configfilepath *string) error {
-	Init(configfilepath)
+	global.Init(configfilepath)
 	return nil
 }
