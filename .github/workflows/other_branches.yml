@@ -2,7 +2,7 @@ name: Other Branches
 
 on:
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
   setup:
