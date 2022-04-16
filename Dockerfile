@@ -11,7 +11,8 @@ COPY ./scripts /src/scripts
 COPY ./go.mod /src/go.mod
 COPY ./go.sum /src/go.sum
 
-# RUN go env -w GOPROXY=https://goproxy.cn,direct
+# for build local
+RUN go env -w GOPROXY=https://goproxy.cn,direct
 RUN CGO_ENABLED=0 go build -o /src/mdm
 
 FROM scratch
@@ -24,4 +25,5 @@ COPY config.yml /app/config.yml
 EXPOSE 80
 EXPOSE 3000
 
-CMD ["mdm", "serve", "-c", "/app/config.yml"]
+ENTRYPOINT ["mdm"]
+CMD ["serve", "-c", "/app/config.yml"]

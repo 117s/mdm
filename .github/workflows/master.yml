@@ -13,21 +13,18 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: 1.17
-      - name: Set up Node
-        uses: actions/setup-node@v2
-        with:
-          node-version: '16'
-      - name: Install Node Deps
-        run: npm install
+#      - name: Set up Node
+#        uses: actions/setup-node@v2
+#        with:
+#          node-version: '16'
+#      - name: Install Node Deps
+#        run: npm install
 #      - name: Semantic Release
 #        env:
 #          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 #        run: npm run semantic-release
       - name: Prepare Docker
-        env:
-          ALI_DOCKER_USER: ${{ secrets.DOCKER_USER }}
-          ALI_DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
-        run: docker login -u "$ALI_DOCKER_USER" -p "$ALI_DOCKER_PASS"
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
       - name: Build docker
         run: bash scripts/build_docker.sh
 #      - name: Renovate

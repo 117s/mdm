@@ -1,0 +1,21 @@
+
+logger:
+  # json or console
+  format: console
+  level: debug
+  disableCaller: false
+  development: true
+
+cors:
+  mode: allow-all
+
+system:
+  port: 3000
+  # mode could be one of the following
+  # - debug
+  # - release
+  # - test
+  mode: debug
+  # database type, supports:
+  # pgsql
+  db-type: pgsql
