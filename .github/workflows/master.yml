@@ -18,12 +18,12 @@ jobs:
         with:
           node-version: '16'
       - name: Install Node Deps
-        run: npm install
+        run: yarn install
       - name: Semantic Release
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npm run semantic-release
+        run: yarn semantic-release
       - name: Prepare Docker
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
       - name: Build docker
