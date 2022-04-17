@@ -12,7 +12,7 @@ COPY ./go.mod /src/go.mod
 COPY ./go.sum /src/go.sum
 
 # for build local
-RUN go env -w GOPROXY=https://goproxy.cn,direct
+#RUN go env -w GOPROXY=https://goproxy.cn,direct
 RUN CGO_ENABLED=0 go build -o /src/mdm
 
 FROM scratch
