@@ -13,12 +13,12 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: 1.17
-#      - name: Set up Node
-#        uses: actions/setup-node@v2
-#        with:
-#          node-version: '16'
-#      - name: Install Node Deps
-#        run: npm install
+      - name: Set up Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      - name: Install Node Deps
+        run: npm install
       - name: Semantic Release
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
