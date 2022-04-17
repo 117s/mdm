@@ -20,7 +20,7 @@
   ],
   "release": {
     "branches": [
-      "master",
+      "main",
       {
         "name": "release",
         "range": "1.x"
