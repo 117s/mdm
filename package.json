@@ -2,7 +2,7 @@
   "name": "@117cloud/mdm",
   "version": "0.1.0-snapshot.0",
   "main": "index.js",
-  "repository": "https://github.com:117/s/mdm.git",
+  "repository": "https://github.com/117s/mdm.git",
   "author": "zhaochy <zhaochy_2015@hotmail.com>",
   "license": "Apache 2.0",
   "private": false,
