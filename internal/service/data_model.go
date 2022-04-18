@@ -2,9 +2,11 @@ package service
 
 import (
 	"context"
+	"errors"
 	"github.com/117s/mdm/internal/global"
 	"github.com/117s/mdm/internal/schema"
 	"github.com/117s/mdm/web/dto"
+	"gorm.io/gorm"
 )
 
 // GetDataModels find data models from db with given query params
@@ -34,4 +36,16 @@ func GetDataModelByID(ctx context.Context, id string) (*schema.DataModel, error)
 		return nil, tx.Error
 	}
 	return &dm, nil
+}
+
+func GetDataModelByIdentifier(ctx context.Context, tenantID, identifier string) (*schema.DataModel, bool, error) {
+	global.Log.Sugar().Debugf("get data model by identifier:%s, tenantId: %s", identifier, tenantID)
+
+	var dm schema.DataModel
+	tx := global.DB.WithContext(ctx).Model(schema.DataModel{}).
+		Where(schema.DataModel{Identifier: identifier, TenantID: tenantID}).
+		Take(&dm)
+	exists := !errors.Is(tx.Error, gorm.ErrRecordNotFound)
+
+	return &dm, exists, tx.Error
 }

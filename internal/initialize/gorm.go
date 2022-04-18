@@ -26,6 +26,7 @@ func RegisterTables(db *gorm.DB) {
 	err := db.AutoMigrate(
 		schema.DataModel{},
 		schema.Property{},
+		schema.Tenant{},
 	)
 	if err != nil {
 		global.Log.Error("register table failed", zap.Error(err))

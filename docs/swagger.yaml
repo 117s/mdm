@@ -1,20 +1,23 @@
 definitions:
   dto.CreateDataModelDraftRequest:
     properties:
-      id:
+      identifier:
         type: string
+      name:
+        type: string
+      tenantId:
+        type: string
+    required:
+    - identifier
+    - name
+    - tenantId
+    type: object
+  dto.CreateTenantRequest:
+    properties:
       name:
         type: string
     required:
-    - id
     - name
-    type: object
-  dto.CreateDataModelDraftResponse:
-    properties:
-      id:
-        type: string
-      name:
-        type: string
     type: object
   dto.ErrorResponse:
     properties:
@@ -43,7 +46,11 @@ definitions:
     type: object
   schema.DataModel:
     properties:
+      createdAt:
+        type: integer
       id:
+        type: string
+      identifier:
         type: string
       isDraft:
         type: boolean
@@ -55,10 +62,18 @@ definitions:
         type: array
       tableName:
         type: string
+      tenant:
+        $ref: '#/definitions/schema.Tenant'
+      tenantId:
+        type: string
+      updatedAt:
+        type: integer
     required:
     - id
+    - identifier
     - name
     - properties
+    - tenantId
     type: object
   schema.Property:
     properties:
@@ -95,6 +110,13 @@ definitions:
     - name
     - required
     - type
+    type: object
+  schema.Tenant:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
     type: object
 info:
   contact:
@@ -164,7 +186,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.CreateDataModelDraftResponse'
+            $ref: '#/definitions/schema.DataModel'
         "400":
           description: Bad Request
           schema:
@@ -208,6 +230,71 @@ paths:
       summary: marks a data model is being editing
       tags:
       - DataModelDraft
+  /api/v1/data-model/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get a DataModel details
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/schema.DataModel'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get a DataModel details
+      tags:
+      - DataModel
+  /api/v1/tenant:
+    post:
+      consumes:
+      - application/json
+      description: Create a new `Tenant`
+      parameters:
+      - description: create new tenant request
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateTenantRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/schema.Tenant'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Create a new Tenant
+      tags:
+      - Tenant
 securityDefinitions:
   ApiKeyAuth:
     in: header

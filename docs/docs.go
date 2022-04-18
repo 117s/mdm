@@ -119,7 +119,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dto.CreateDataModelDraftResponse"
+                            "$ref": "#/definitions/schema.DataModel"
                         }
                     },
                     "400": {
@@ -182,30 +182,137 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/api/v1/data-model/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get a DataModel details",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "DataModel"
+                ],
+                "summary": "Get a DataModel details",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/schema.DataModel"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/tenant": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Create a new ` + "`" + `Tenant` + "`" + `",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Tenant"
+                ],
+                "summary": "Create a new Tenant",
+                "parameters": [
+                    {
+                        "description": "create new tenant request",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.CreateTenantRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/schema.Tenant"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ErrorResponse"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
         "dto.CreateDataModelDraftRequest": {
             "type": "object",
             "required": [
-                "id",
-                "name"
+                "identifier",
+                "name",
+                "tenantId"
             ],
             "properties": {
-                "id": {
+                "identifier": {
                     "type": "string"
                 },
                 "name": {
                     "type": "string"
+                },
+                "tenantId": {
+                    "type": "string"
                 }
             }
         },
-        "dto.CreateDataModelDraftResponse": {
+        "dto.CreateTenantRequest": {
             "type": "object",
+            "required": [
+                "name"
+            ],
             "properties": {
-                "id": {
-                    "type": "string"
-                },
                 "name": {
                     "type": "string"
                 }
@@ -253,11 +360,19 @@ const docTemplate = `{
             "type": "object",
             "required": [
                 "id",
+                "identifier",
                 "name",
-                "properties"
+                "properties",
+                "tenantId"
             ],
             "properties": {
+                "createdAt": {
+                    "type": "integer"
+                },
                 "id": {
+                    "type": "string"
+                },
+                "identifier": {
                     "type": "string"
                 },
                 "isDraft": {
@@ -274,6 +389,15 @@ const docTemplate = `{
                 },
                 "tableName": {
                     "type": "string"
+                },
+                "tenant": {
+                    "$ref": "#/definitions/schema.Tenant"
+                },
+                "tenantId": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "integer"
                 }
             }
         },
@@ -313,6 +437,17 @@ const docTemplate = `{
                 },
                 "type": {
                     "description": "Type can be any of \"string\", \"text\", \"number\", \"boolean\", \"date\"\nstring must have a max length, while text does not require this\nstring =\u003e VARCHAR\ntext =\u003e TEXT",
+                    "type": "string"
+                }
+            }
+        },
+        "schema.Tenant": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
                     "type": "string"
                 }
             }

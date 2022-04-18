@@ -3,6 +3,7 @@ package server
 import (
 	"github.com/117s/mdm/web/handler/data_model"
 	"github.com/117s/mdm/web/handler/data_model_draft"
+	"github.com/117s/mdm/web/handler/tenant"
 	"github.com/117s/mdm/web/middleware"
 	"github.com/gin-gonic/gin"
 	swaggerfiles "github.com/swaggo/files"
@@ -23,12 +24,13 @@ func Routes() *gin.Engine {
 
 	v1 := router.Group("/api/v1")
 
-	v1.POST("/data-model-draft", data_model_draft.CreateDraft)
+	v1.POST("/data-model-draft", data_model_draft.Create)
 	v1.POST("/data-model-draft/:id/editing", data_model_draft.OnEditing)
 
 	v1.GET("/data-model", data_model.Index)
 	v1.GET("/data-model/:id", data_model.Show)
 	v1.PUT("/data-model/:id", data_model.Publish)
 
+	v1.POST("/tenants", tenant.Create)
 	return router
 }

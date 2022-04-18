@@ -18,8 +18,11 @@ type DataModel struct {
 	Name        string     `validate:"required" json:"name"`
 	TableName   string     `json:"tableName"`
 	Properties  []Property `validate:"required" json:"properties,omitempty"`
-	PrimaryKeys []string   `validate:"required" json:"-" gorm:"type:varchar(64)[]"`
+	PrimaryKeys []string   `validate:"required" json:"primaryKeys,omitempty" gorm:"type:varchar(64)[]"`
 	IsDraft     bool       `json:"isDraft"`
+
+	TenantID string `json:"tenantId" validate:"required"`
+	Tenant   Tenant `json:"-"`
 
 	CreatedAt int64 `json:"createdAt" gorm:"autoCreateTime"`
 	UpdatedAt int64 `json:"updatedAt" gorm:"autoUpdateTime"`

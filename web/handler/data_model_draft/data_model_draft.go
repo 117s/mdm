@@ -10,7 +10,7 @@ import (
 	"net/http"
 )
 
-// CreateDraft go docs
+// Create go docs
 // @Summary      Create a new `DataModel`
 // @Description  Create a new `DataModel`, start with a draft mode, need to be published before CRUD data
 // @Tags         DataModelDraft
@@ -18,12 +18,12 @@ import (
 // @Produce      json
 // @Security     ApiKeyAuth
 // @Param        data  body      dto.CreateDataModelDraftRequest  true  "create data model request"
-// @Success      200   {object}  dto.CreateDataModelDraftResponse
+// @Success      200   {object}  schema.DataModel
 // @Failure      400  {object}  dto.ErrorResponse
 // @Failure      404  {object}  dto.ErrorResponse
 // @Failure      500  {object}  dto.ErrorResponse
 // @Router       /api/v1/data-model-draft [post]
-func CreateDraft(c *gin.Context) {
+func Create(c *gin.Context) {
 	var req dto.CreateDataModelDraftRequest
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
@@ -36,6 +36,7 @@ func CreateDraft(c *gin.Context) {
 		ID:         utils.NewID(),
 		Identifier: req.Identifier,
 		Name:       req.Name,
+		TenantID:   req.TenantID,
 	}
 	res, err := service.CreateDataModelDraft(c, dm)
 	if err != nil {
