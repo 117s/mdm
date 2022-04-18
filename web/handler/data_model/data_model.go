@@ -31,16 +31,21 @@ func Publish(c *gin.Context) {
 func Index(c *gin.Context) {
 	query, err := utils.ParsePaginationQuery(c)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, dto.NewRequestQueryErr(err.Error()))
+		c.JSON(http.StatusBadRequest, dto.ErrInvalidQuery(err.Error()))
+		return
+	}
+	tid, exists := c.Get("tid")
+	if !exists {
+		c.JSON(http.StatusBadRequest, dto.ErrUnauthorized("can not find tenantId in token"))
 		return
 	}
 
-	res, err := service.GetDataModels(c, query)
+	res, cnt, err := service.GetDataModels(c, tid.(string), query)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, dto.NewErrorResponse(err.Error(), "", ""))
 		return
 	}
-	c.JSON(http.StatusOK, res)
+	c.JSON(http.StatusOK, utils.ToPaginationResult(res, len(res), int(cnt), query.Skip, query.Limit))
 }
 
 // Show go docs

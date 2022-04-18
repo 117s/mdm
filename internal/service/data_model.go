@@ -10,21 +10,24 @@ import (
 )
 
 // GetDataModels find data models from db with given query params
-func GetDataModels(ctx context.Context, query dto.CommonQuery) ([]schema.DataModel, error) {
+func GetDataModels(ctx context.Context, tenantId string, query dto.CommonQuery) ([]schema.DataModel, int64, error) {
 	global.Log.Sugar().Debugf("get data model list with query: %+v", query)
 
-	var models []schema.DataModel
 	// TODO: support order and filter
-	// TODO: filter by tenant id
-	tx := global.DB.WithContext(ctx).Model(schema.DataModel{}).
-		Offset(query.Skip).
-		Limit(query.Limit).
-		Find(&models)
-
+	q := global.DB.WithContext(ctx).Model(schema.DataModel{}).Where(schema.DataModel{TenantID: tenantId})
+	var cnt int64
+	tx := q.Count(&cnt)
 	if tx.Error != nil {
-		return nil, tx.Error
+		return nil, 0, tx.Error
 	}
-	return models, nil
+
+	var models []schema.DataModel
+	tx = q.Offset(query.Skip).Limit(query.Limit).Find(&models)
+	if tx.Error != nil {
+		return nil, 0, tx.Error
+	}
+
+	return models, cnt, nil
 }
 
 func GetDataModelByID(ctx context.Context, id string) (*schema.DataModel, error) {

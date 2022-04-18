@@ -27,3 +27,15 @@ func ParsePaginationQuery(c *gin.Context) (dto.CommonQuery, error) {
 
 	return params, nil
 }
+
+func ToPaginationResult(results interface{}, resultLength, cnt, skip, limit int) dto.PaginationResult {
+	return dto.PaginationResult{
+		Results: results,
+		Metadata: dto.PaginationMetadata{
+			Total:   cnt,
+			Skip:    skip,
+			Limit:   limit,
+			HasNext: (resultLength + skip) < cnt,
+		},
+	}
+}

@@ -37,7 +37,7 @@ func NewErrorResponse(message, code string, details interface{}) ErrorResponse {
 	}
 }
 
-func NewRequestBodyErr(details interface{}) ErrorResponse {
+func ErrInvalidBody(details interface{}) ErrorResponse {
 	return ErrorResponse{
 		Message: "invalid request body",
 		Code:    "common-1",
@@ -45,9 +45,16 @@ func NewRequestBodyErr(details interface{}) ErrorResponse {
 	}
 }
 
-func NewRequestQueryErr(details interface{}) ErrorResponse {
+func ErrInvalidQuery(details interface{}) ErrorResponse {
 	return ErrorResponse{
 		Message: "invalid request query params",
+		Code:    "common-2",
+		Details: details,
+	}
+}
+func ErrUnauthorized(details interface{}) ErrorResponse {
+	return ErrorResponse{
+		Message: "unauthorized",
 		Code:    "common-2",
 		Details: details,
 	}

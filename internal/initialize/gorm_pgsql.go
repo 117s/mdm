@@ -4,6 +4,7 @@ import (
 	"github.com/117s/mdm/internal/global"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 // GormPgSql 初始化 Postgresql 数据库
@@ -18,6 +19,7 @@ func GormPgSql() *gorm.DB {
 	}
 	db, err := gorm.Open(postgres.New(pgsqlConfig), &gorm.Config{
 		DisableForeignKeyConstraintWhenMigrating: true,
+		Logger:                                   logger.Default.LogMode(logger.Info),
 	})
 	if err != nil {
 		return nil

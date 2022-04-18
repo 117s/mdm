@@ -23,6 +23,7 @@ func Routes() *gin.Engine {
 	})
 
 	v1 := router.Group("/api/v1")
+	v1.Use(middleware.JWTAuthentication())
 
 	v1.POST("/data-model-draft", data_model_draft.Create)
 	v1.POST("/data-model-draft/:id/editing", data_model_draft.OnEditing)

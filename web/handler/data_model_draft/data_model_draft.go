@@ -27,7 +27,7 @@ func Create(c *gin.Context) {
 	var req dto.CreateDataModelDraftRequest
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, dto.NewRequestBodyErr(err.Error()))
+		c.JSON(http.StatusBadRequest, dto.ErrInvalidBody(err.Error()))
 		return
 	}
 	global.Log.Sugar().Debugf("create data model draft with %+v", req)
