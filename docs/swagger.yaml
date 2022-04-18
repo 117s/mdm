@@ -56,14 +56,16 @@ definitions:
         type: boolean
       name:
         type: string
+      primaryKeys:
+        items:
+          type: string
+        type: array
       properties:
         items:
           $ref: '#/definitions/schema.Property'
         type: array
       tableName:
         type: string
-      tenant:
-        $ref: '#/definitions/schema.Tenant'
       tenantId:
         type: string
       updatedAt:
@@ -72,6 +74,7 @@ definitions:
     - id
     - identifier
     - name
+    - primaryKeys
     - properties
     - tenantId
     type: object
@@ -113,10 +116,14 @@ definitions:
     type: object
   schema.Tenant:
     properties:
+      createdAt:
+        type: integer
       id:
         type: string
       name:
         type: string
+      updatedAt:
+        type: integer
     type: object
 info:
   contact:

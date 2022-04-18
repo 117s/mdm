@@ -353,6 +353,7 @@
                 "id",
                 "identifier",
                 "name",
+                "primaryKeys",
                 "properties",
                 "tenantId"
             ],
@@ -372,6 +373,12 @@
                 "name": {
                     "type": "string"
                 },
+                "primaryKeys": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
                 "properties": {
                     "type": "array",
                     "items": {
@@ -380,9 +387,6 @@
                 },
                 "tableName": {
                     "type": "string"
-                },
-                "tenant": {
-                    "$ref": "#/definitions/schema.Tenant"
                 },
                 "tenantId": {
                     "type": "string"
@@ -435,11 +439,17 @@
         "schema.Tenant": {
             "type": "object",
             "properties": {
+                "createdAt": {
+                    "type": "integer"
+                },
                 "id": {
                     "type": "string"
                 },
                 "name": {
                     "type": "string"
+                },
+                "updatedAt": {
+                    "type": "integer"
                 }
             }
         }

@@ -362,6 +362,7 @@ const docTemplate = `{
                 "id",
                 "identifier",
                 "name",
+                "primaryKeys",
                 "properties",
                 "tenantId"
             ],
@@ -381,6 +382,12 @@ const docTemplate = `{
                 "name": {
                     "type": "string"
                 },
+                "primaryKeys": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
                 "properties": {
                     "type": "array",
                     "items": {
@@ -389,9 +396,6 @@ const docTemplate = `{
                 },
                 "tableName": {
                     "type": "string"
-                },
-                "tenant": {
-                    "$ref": "#/definitions/schema.Tenant"
                 },
                 "tenantId": {
                     "type": "string"
@@ -444,11 +448,17 @@ const docTemplate = `{
         "schema.Tenant": {
             "type": "object",
             "properties": {
+                "createdAt": {
+                    "type": "integer"
+                },
                 "id": {
                     "type": "string"
                 },
                 "name": {
                     "type": "string"
+                },
+                "updatedAt": {
+                    "type": "integer"
                 }
             }
         }

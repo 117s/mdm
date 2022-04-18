@@ -5,4 +5,7 @@ package schema
 type Tenant struct {
 	ID   string `json:"id"`
 	Name string `json:"name"`
+
+	CreatedAt int64 `json:"createdAt" gorm:"autoCreateTime"`
+	UpdatedAt int64 `json:"updatedAt" gorm:"autoUpdateTime"`
 }
