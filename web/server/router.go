@@ -17,12 +17,17 @@ func Routes() *gin.Engine {
 	// middleware
 	router.Use(middleware.Cors())
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
+	router.GET("/", func(c *gin.Context) {
+		c.Redirect(302, "/swagger/index.html")
+	})
 
 	v1 := router.Group("/api/v1")
 
 	v1.POST("/data-model-draft", data_model_draft.CreateDraft)
 	v1.POST("/data-model-draft/:id/editing", data_model_draft.OnEditing)
 
+	v1.GET("/data-model", data_model.Index)
+	v1.GET("/data-model/:id", data_model.Show)
 	v1.PUT("/data-model/:id", data_model.Publish)
 
 	return router

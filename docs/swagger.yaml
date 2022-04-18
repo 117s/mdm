@@ -1,3 +1,101 @@
+definitions:
+  dto.CreateDataModelDraftRequest:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    required:
+    - id
+    - name
+    type: object
+  dto.CreateDataModelDraftResponse:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  dto.ErrorResponse:
+    properties:
+      code:
+        type: string
+      details: {}
+      message:
+        type: string
+    type: object
+  dto.PaginationMetadata:
+    properties:
+      hasNext:
+        type: boolean
+      limit:
+        type: integer
+      skip:
+        type: integer
+      total:
+        type: integer
+    type: object
+  dto.PaginationResult:
+    properties:
+      metadata:
+        $ref: '#/definitions/dto.PaginationMetadata'
+      results: {}
+    type: object
+  schema.DataModel:
+    properties:
+      id:
+        type: string
+      isDraft:
+        type: boolean
+      name:
+        type: string
+      properties:
+        items:
+          $ref: '#/definitions/schema.Property'
+        type: array
+      tableName:
+        type: string
+    required:
+    - id
+    - name
+    - properties
+    type: object
+  schema.Property:
+    properties:
+      comments:
+        type: string
+      dataModelId:
+        type: string
+      id:
+        description: |-
+          ID is used to identify this property, which will be used as the name of this column
+          should follow pattern ^[a-z_][a-z0-9_]*$
+          ID should have a max length of 64
+        type: string
+      name:
+        description: Name is used for business observers
+        type: string
+      options:
+        additionalProperties: true
+        type: object
+      optionsStr:
+        type: string
+      required:
+        type: boolean
+      type:
+        description: |-
+          Type can be any of "string", "text", "number", "boolean", "date"
+          string must have a max length, while text does not require this
+          string => VARCHAR
+          text => TEXT
+        type: string
+    required:
+    - dataModelId
+    - id
+    - name
+    - required
+    - type
+    type: object
 info:
   contact:
     email: support@swagger.io
@@ -10,7 +108,106 @@ info:
   termsOfService: http://swagger.io/terms/
   title: Swagger Example API
   version: "1.0"
-paths: {}
+paths:
+  /api/v1/data-model:
+    get:
+      consumes:
+      - application/json
+      description: List all `DataModel`s
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.PaginationResult'
+            - properties:
+                results:
+                  items:
+                    $ref: '#/definitions/schema.DataModel'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: List all DataModel
+      tags:
+      - DataModel
+  /api/v1/data-model-draft:
+    post:
+      consumes:
+      - application/json
+      description: Create a new `DataModel`, start with a draft mode, need to be published
+        before CRUD data
+      parameters:
+      - description: create data model request
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateDataModelDraftRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.CreateDataModelDraftResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Create a new `DataModel`
+      tags:
+      - DataModelDraft
+  /api/v1/data-model-draft/{id}/editing:
+    post:
+      consumes:
+      - application/json
+      description: marks this `DataModelDraft` is being edited by someone, thus can
+        not be updated by anyone else.
+      produces:
+      - application/json
+      responses:
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: marks a data model is being editing
+      tags:
+      - DataModelDraft
 securityDefinitions:
   ApiKeyAuth:
     in: header

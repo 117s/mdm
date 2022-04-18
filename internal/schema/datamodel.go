@@ -14,8 +14,13 @@ package schema
 //
 type DataModel struct {
 	ID          string     `validate:"required" json:"id"`
+	Identifier  string     `validate:"required" json:"identifier"`
 	Name        string     `validate:"required" json:"name"`
 	TableName   string     `json:"tableName"`
-	Properties  []Property `validate:"required" json:"properties"`
-	PrimaryKeys []string   `validate:"required" json:"-"`
+	Properties  []Property `validate:"required" json:"properties,omitempty"`
+	PrimaryKeys []string   `validate:"required" json:"-" gorm:"type:varchar(64)[]"`
+	IsDraft     bool       `json:"isDraft"`
+
+	CreatedAt int64 `json:"createdAt" gorm:"autoCreateTime"`
+	UpdatedAt int64 `json:"updatedAt" gorm:"autoUpdateTime"`
 }

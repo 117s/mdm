@@ -1,7 +1,8 @@
 package utils
 
 import (
-	"github.com/117s/mdm/internal/global"
+	"github.com/117s/mdm/internal/initialize"
+	"github.com/rs/xid"
 	"path"
 	"path/filepath"
 	"runtime"
@@ -12,5 +13,10 @@ func PreTest() {
 	dir := filepath.Dir(fp)
 	testConfig := "config_test.yml"
 	testConfigPath := path.Join(dir, testConfig)
-	global.Init(&testConfigPath)
+	initialize.Init(&testConfigPath)
+}
+
+func NewID() string {
+	guid := xid.New()
+	return guid.String()
 }

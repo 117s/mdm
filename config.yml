@@ -19,3 +19,10 @@ system:
   # database type, supports:
   # pgsql
   db-type: pgsql
+
+pgsql:
+  path: '127.0.0.1'
+  port: 5432
+  db-name: postgres
+  username: postgres
+  password: auth

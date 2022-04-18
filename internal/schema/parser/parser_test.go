@@ -1,7 +1,8 @@
-package schema
+package parser
 
 import (
 	"encoding/json"
+	"github.com/117s/mdm/internal/schema"
 	"github.com/117s/mdm/internal/utils"
 	"github.com/stretchr/testify/assert"
 	"testing"
@@ -25,7 +26,7 @@ func TestValidateJSON(t *testing.T) {
 		schemaStr := string(schemaBytes)
 
 		_, err := ValidateJSON(schemaStr)
-		assert.NotNil(t, err, "123")
+		assert.NotNil(t, err)
 	})
 
 	t.Run("validate without invalid json", func(t *testing.T) {
@@ -47,7 +48,8 @@ func TestValidateJSON(t *testing.T) {
 		schemaBytes, _ := json.Marshal(schemaJson)
 		schemaStr := string(schemaBytes)
 
-		ValidateJSON(schemaStr)
+		_, err := ValidateJSON(schemaStr)
+		assert.Nil(t, err)
 	})
 }
 
@@ -55,11 +57,11 @@ func TestValidateProperties(t *testing.T) {
 	utils.PreTest()
 
 	t.Run("all properties should have unique id", func(t *testing.T) {
-		dm := DataModel{
+		dm := schema.DataModel{
 			ID:        "user",
 			Name:      "User",
 			TableName: "users",
-			Properties: []Property{
+			Properties: []schema.Property{
 				{
 					ID:       "id",
 					Name:     "User ID",
@@ -80,11 +82,11 @@ func TestValidateProperties(t *testing.T) {
 	})
 
 	t.Run("pk must be required", func(t *testing.T) {
-		dm := DataModel{
+		dm := schema.DataModel{
 			ID:        "user",
 			Name:      "User",
 			TableName: "users",
-			Properties: []Property{
+			Properties: []schema.Property{
 				{
 					ID:       "id",
 					Name:     "User ID",
@@ -100,11 +102,11 @@ func TestValidateProperties(t *testing.T) {
 	})
 
 	t.Run("unsupported property type should fail", func(t *testing.T) {
-		dm := DataModel{
+		dm := schema.DataModel{
 			ID:        "user",
 			Name:      "User",
 			TableName: "users",
-			Properties: []Property{
+			Properties: []schema.Property{
 				{
 					ID:       "id",
 					Name:     "User ID",
@@ -120,11 +122,11 @@ func TestValidateProperties(t *testing.T) {
 	})
 
 	t.Run("success", func(t *testing.T) {
-		dm := DataModel{
+		dm := schema.DataModel{
 			ID:        "user",
 			Name:      "User",
 			TableName: "users",
-			Properties: []Property{
+			Properties: []schema.Property{
 				{
 					ID:       "id",
 					Name:     "User ID",
