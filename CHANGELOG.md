@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/117s/mdm/compare/v1.1.0...v1.2.0) (2022-04-18)
+
+
+### Features
+
+* add simple tenant model ([323b6b3](https://github.com/117s/mdm/commit/323b6b31e3c944c2a0adea2aaff1c4ab3ad814cf))
+
 # [1.1.0](https://github.com/117s/mdm/compare/v1.0.0...v1.1.0) (2022-04-18)
 
 
